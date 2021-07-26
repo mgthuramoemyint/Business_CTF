@@ -113,4 +113,4 @@ print "n:", int(key.n)
 print "e:", int(key.e)
 ```
 That is all, copy the jwt token and replace in cookie.
-![Emergency Solved](img/generate_jwt.png)
+![Emergency Solved](img/emergency_solved.png)
